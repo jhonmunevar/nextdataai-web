@@ -145,6 +145,55 @@
   .mobile-menu-close{position:absolute;top:20px;right:6vw;background:none;border:none;
     color:#fff;font-size:2rem;line-height:1;cursor:pointer;}
 
+
+  .ai-chat-launcher{position:fixed;bottom:26px;left:26px;width:60px;height:60px;border-radius:50%;
+    background:linear-gradient(120deg,#2563EB,#06B6D4);display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:1.5rem;box-shadow:0 10px 26px -6px rgba(37,99,235,.6);z-index:999;cursor:pointer;
+    border:none;transition:transform .25s ease;}
+  .ai-chat-launcher:hover{transform:scale(1.08);}
+  .ai-chat-launcher .ping{position:absolute;top:-2px;right:-2px;width:14px;height:14px;border-radius:50%;
+    background:#22C55E;border:2px solid #fff;}
+  .ai-chat-panel{position:fixed;bottom:100px;left:26px;width:370px;max-width:92vw;max-height:76vh;
+    background:#fff;border-radius:18px;box-shadow:0 30px 60px -20px rgba(15,23,42,.4);
+    display:none;flex-direction:column;overflow:hidden;z-index:1000;border:1px solid #E2E8F0;}
+  .ai-chat-panel.open{display:flex;}
+  .ai-chat-header{background:var(--navy);color:#fff;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+  .ai-chat-header .title{display:flex;align-items:center;gap:10px;}
+  .ai-chat-header .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(120deg,#2563EB,#06B6D4);
+    display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
+  .ai-chat-header .txt b{display:block;font-size:.86rem;}
+  .ai-chat-header .txt span{font-size:.7rem;color:#94A3B8;display:flex;align-items:center;gap:5px;}
+  .ai-chat-header .txt span::before{content:'';width:6px;height:6px;border-radius:50%;background:#22C55E;display:inline-block;}
+  .ai-chat-close{background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;opacity:.8;}
+  .ai-chat-close:hover{opacity:1;}
+  .ai-chat-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background:#F8FAFC;}
+  .ai-msg{max-width:88%;padding:11px 14px;border-radius:12px;font-size:.84rem;line-height:1.5;}
+  .ai-msg.bot{align-self:flex-start;background:#fff;border:1px solid #E2E8F0;border-bottom-left-radius:3px;color:var(--navy);}
+  .ai-msg.user{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:3px;}
+  .ai-options{display:flex;flex-wrap:wrap;gap:8px;align-self:flex-start;max-width:100%;}
+  .ai-opt-btn{background:#fff;border:1px solid var(--blue);color:var(--blue);border-radius:100px;
+    padding:8px 14px;font-size:.76rem;font-weight:600;cursor:pointer;transition:.2s;}
+  .ai-opt-btn:hover{background:var(--blue);color:#fff;}
+  .ai-preview-card{align-self:stretch;background:#0F172A;border-radius:12px;padding:16px;color:#fff;}
+  .ai-preview-card .pv-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .ai-preview-card .pv-head h5{font-size:.72rem;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;}
+  .ai-preview-card .pv-head .pv-tag{font-size:.66rem;background:rgba(37,99,235,.25);color:#93C5FD;padding:3px 8px;border-radius:100px;}
+  .ai-preview-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}
+  .ai-preview-kpi{background:#1E293B;border-radius:8px;padding:8px 10px;}
+  .ai-preview-kpi span{display:block;font-size:.62rem;color:#94A3B8;}
+  .ai-preview-kpi b{font-family:'Poppins';font-size:.92rem;}
+  .ai-preview-bars{display:flex;align-items:flex-end;gap:5px;height:44px;}
+  .ai-preview-bars i{flex:1;background:linear-gradient(180deg,#06B6D4,#2563EB);border-radius:3px 3px 0 0;display:block;}
+  .ai-preview-link{display:inline-block;margin-top:12px;font-size:.76rem;color:#67E8F9;font-weight:600;}
+  .ai-lead-form{align-self:stretch;display:flex;flex-direction:column;gap:8px;}
+  .ai-lead-form input{border:1px solid #E2E8F0;border-radius:8px;padding:10px 12px;font-family:'Montserrat';font-size:.82rem;}
+  .ai-lead-form button{background:var(--grad);color:#fff;border:none;border-radius:8px;padding:11px;font-weight:700;font-size:.82rem;cursor:pointer;}
+  .ai-typing{display:inline-flex;gap:4px;align-self:flex-start;background:#fff;border:1px solid #E2E8F0;padding:12px 16px;border-radius:12px;}
+  .ai-typing span{width:6px;height:6px;border-radius:50%;background:#94A3B8;animation:aiblink 1.3s infinite;}
+  .ai-typing span:nth-child(2){animation-delay:.2s;} .ai-typing span:nth-child(3){animation-delay:.4s;}
+  @keyframes aiblink{0%,80%,100%{opacity:.3;}40%{opacity:1;}}
+  @media (max-width:480px){.ai-chat-panel{left:10px;right:10px;width:auto;bottom:96px;max-height:80vh;}}
+
 </style>
 </head>
 <body>
@@ -318,6 +367,188 @@
   overlay.querySelectorAll('a').forEach(function(a){
     a.addEventListener('click', closeMenu);
   });
+})();
+</script>
+
+
+<script>
+(function(){
+  var SECTORS = {
+    "Salud": {product:"NextData Healthcare", url:"producto-healthcare.html", tag:"Salud",
+      kpis:[["Glosas evitadas","$186M"],["Ocupación de camas","82.1%"]], bars:[55,70,60,85,75,90]},
+    "Retail": {product:"NextData RetailIQ", url:"producto-retailiq.html", tag:"Retail",
+      kpis:[["Quiebres de stock","3.2%"],["Rotación","6.4x"]], bars:[60,68,55,80,72,95]},
+    "Educación": {product:"NextData Campus", url:"producto-campus.html", tag:"Educación",
+      kpis:[["Estudiantes","8,420"],["Deserción","4.1%"]], bars:[50,65,58,78,70,88]},
+    "Gobierno": {product:"NextData Insight", url:"producto-insight.html", tag:"Gobierno",
+      kpis:[["Fuentes conectadas","6"],["Indicadores unificados","24"]], bars:[45,60,55,75,68,82]},
+    "Manufactura": {product:"NextData Insight", url:"producto-insight.html", tag:"Manufactura",
+      kpis:[["Trazabilidad","98.2%"],["Costo por lote","-6.4%"]], bars:[58,64,60,79,74,91]},
+    "Mecánica": {product:"NextData MotorAI", url:"producto-motorai.html", tag:"Mecánica automotriz",
+      kpis:[["Tiempo de diagnóstico","-38%"],["Casos resueltos","1,240"]], bars:[40,55,50,70,65,86]},
+    "Gastronomía": {product:"NextData ChefAI", url:"producto-chefai.html", tag:"Gastronomía",
+      kpis:[["Food cost promedio","26.3%"],["Margen mejorado","+7%"]], bars:[48,62,57,74,69,89]},
+    "Logística": {product:"NextData FieldOps", url:"producto-fieldops.html", tag:"Logística",
+      kpis:[["Entregas a tiempo","94.6%"],["Costo por entrega","-4.2%"]], bars:[52,66,59,81,73,93]},
+    "Otro": {product:"NextData Insight", url:"producto-insight.html", tag:"Tu negocio",
+      kpis:[["Fuentes de datos","+6"],["Tiempo de implementación","4-8 sem."]], bars:[50,60,55,75,70,88]}
+  };
+  var GOALS = [
+    "Visualizar mis datos en un dashboard",
+    "Un asistente de IA / chatbot para mi negocio",
+    "Automatizar procesos con IA",
+    "Aún no lo sé, quiero asesoría"
+  ];
+
+  var state = { sector: null, goal: null };
+
+  var launcher = document.createElement('button');
+  launcher.className = 'ai-chat-launcher';
+  launcher.setAttribute('aria-label', 'Abrir asistente NextData AI');
+  launcher.innerHTML = '💬<span class="ping"></span>';
+  document.body.appendChild(launcher);
+
+  var panel = document.createElement('div');
+  panel.className = 'ai-chat-panel';
+  panel.innerHTML =
+    '<div class="ai-chat-header">' +
+      '<div class="title"><div class="avatar">✨</div><div class="txt"><b>Asistente NextData AI</b><span>En línea</span></div></div>' +
+      '<button class="ai-chat-close" aria-label="Cerrar">✕</button>' +
+    '</div>' +
+    '<div class="ai-chat-body" id="aiChatBody"></div>';
+  document.body.appendChild(panel);
+
+  var body = panel.querySelector('#aiChatBody');
+  var closeBtn = panel.querySelector('.ai-chat-close');
+
+  function scrollDown(){ body.scrollTop = body.scrollHeight; }
+
+  function addBotMsg(html){
+    var typing = document.createElement('div');
+    typing.className = 'ai-typing';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    body.appendChild(typing);
+    scrollDown();
+    setTimeout(function(){
+      typing.remove();
+      var m = document.createElement('div');
+      m.className = 'ai-msg bot';
+      m.innerHTML = html;
+      body.appendChild(m);
+      scrollDown();
+    }, 550);
+  }
+
+  function addUserMsg(text){
+    var m = document.createElement('div');
+    m.className = 'ai-msg user';
+    m.textContent = text;
+    body.appendChild(m);
+    scrollDown();
+  }
+
+  function addOptions(options, onPick){
+    var wrap = document.createElement('div');
+    wrap.className = 'ai-options';
+    options.forEach(function(opt){
+      var btn = document.createElement('button');
+      btn.className = 'ai-opt-btn';
+      btn.textContent = opt;
+      btn.onclick = function(){
+        wrap.remove();
+        addUserMsg(opt);
+        onPick(opt);
+      };
+      wrap.appendChild(btn);
+    });
+    body.appendChild(wrap);
+    scrollDown();
+  }
+
+  function showPreview(sectorKey){
+    var d = SECTORS[sectorKey] || SECTORS["Otro"];
+    var card = document.createElement('div');
+    card.className = 'ai-preview-card';
+    var kpisHtml = d.kpis.map(function(k){
+      return '<div class="ai-preview-kpi"><span>'+k[0]+'</span><b>'+k[1]+'</b></div>';
+    }).join('');
+    var barsHtml = d.bars.map(function(h){
+      return '<i style="height:'+h+'%;"></i>';
+    }).join('');
+    card.innerHTML =
+      '<div class="pv-head"><h5>Vista previa · '+d.tag+'</h5><span class="pv-tag">'+d.product+'</span></div>' +
+      '<div class="ai-preview-kpis">'+kpisHtml+'</div>' +
+      '<div class="ai-preview-bars">'+barsHtml+'</div>' +
+      '<a class="ai-preview-link" href="'+d.url+'" target="_blank" rel="noopener">Ver demo completo de '+d.product+' →</a>';
+    body.appendChild(card);
+    scrollDown();
+  }
+
+  function showLeadForm(){
+    setTimeout(function(){
+      var wrap = document.createElement('div');
+      wrap.className = 'ai-lead-form';
+      wrap.innerHTML =
+        '<input type="text" id="aiLeadName" placeholder="Tu nombre">' +
+        '<button id="aiLeadSubmit">Continuar por WhatsApp →</button>';
+      body.appendChild(wrap);
+      scrollDown();
+
+      wrap.querySelector('#aiLeadSubmit').onclick = function(){
+        var name = wrap.querySelector('#aiLeadName').value.trim() || 'un visitante del sitio';
+        wrap.remove();
+        addUserMsg(name);
+        addBotMsg('Gracias, ' + (name === 'un visitante del sitio' ? '' : name.split(' ')[0]) + '. Te paso con nuestro equipo por WhatsApp con todo el contexto para preparar tu propuesta. 🙌');
+        var msg = 'Hola, soy ' + name + '. Sector: ' + state.sector + '. Objetivo: ' + state.goal + '. Vengo del asistente del sitio y quiero una propuesta.';
+        setTimeout(function(){
+          var link = document.createElement('a');
+          link.href = 'https://wa.me/573014314685?text=' + encodeURIComponent(msg);
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.className = 'ai-preview-link';
+          link.style.fontSize = '.86rem';
+          link.textContent = '✅ Abrir WhatsApp con tu información →';
+          body.appendChild(link);
+          scrollDown();
+        }, 500);
+      };
+    }, 300);
+  }
+
+  function startFlow(){
+    body.innerHTML = '';
+    state = { sector: null, goal: null };
+    addBotMsg('👋 Hola, soy el asistente de NextData AI. Te ayudo a encontrar la solución ideal para tu negocio.<br><br>¿En qué sector trabajas?');
+    setTimeout(function(){
+      addOptions(Object.keys(SECTORS), function(sector){
+        state.sector = sector;
+        addBotMsg('Perfecto. ¿Qué te gustaría lograr?');
+        setTimeout(function(){
+          addOptions(GOALS, function(goal){
+            state.goal = goal;
+            addBotMsg('Con base en lo que me cuentas, así podría verse una solución para tu negocio:');
+            setTimeout(function(){
+              showPreview(state.sector);
+              setTimeout(function(){
+                addBotMsg('¿Quieres que preparemos una propuesta a la medida? Dime tu nombre y seguimos por WhatsApp.');
+                showLeadForm();
+              }, 900);
+            }, 700);
+          });
+        }, 700);
+      });
+    }, 700);
+  }
+
+  var started = false;
+  launcher.addEventListener('click', function(){
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open') && !started){
+      started = true;
+      startFlow();
+    }
+  });
+  closeBtn.addEventListener('click', function(){ panel.classList.remove('open'); });
 })();
 </script>
 
