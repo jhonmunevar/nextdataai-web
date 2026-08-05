@@ -247,39 +247,152 @@ body{padding-top:52px;}
   <div class="app-frame">
     <div class="chat-sidebar">
       <div class="brand"><svg width="20" height="20" viewBox="0 0 40 40"><path d="M6 34V6L26 34V6" stroke="url(#ngrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Copilot</div>
-      <button class="new-chat">+ Nueva conversación</button>
+      <button class="new-chat" id="copilotNewChat">+ Nueva conversación</button>
       <div class="sidebar-label">Recientes</div>
-      <div class="chat-item active">Ventas Q2 por región</div>
-      <div class="chat-item">Rotación de inventario</div>
-      <div class="chat-item">Resumen contrato proveedor</div>
-      <div class="chat-item">Indicadores de cartera</div>
+      <div class="chat-item active" data-thread="t1">Ventas Q2 por región</div>
+      <div class="chat-item" data-thread="t2">Rotación de inventario</div>
+      <div class="chat-item" data-thread="t3">Resumen contrato proveedor</div>
+      <div class="chat-item" data-thread="t4">Indicadores de cartera</div>
     </div>
     <div class="chat-main">
       <div class="chat-header">
-        <div><h3>Ventas Q2 por región</h3><span>Conectado a: Data Warehouse · CRM · SharePoint</span></div>
+        <div><h3 id="chatTitle">Ventas Q2 por región</h3><span id="chatSub">Conectado a: Data Warehouse · CRM · SharePoint</span></div>
       </div>
-      <div class="chat-body">
-        <div class="msg user">¿Cómo van las ventas del segundo trimestre frente a la meta?</div>
-        <div class="msg bot">
-          En el Q2, las ventas totales alcanzaron <b>$4.82M</b>, un 6.3% por encima de la meta trimestral ($4.53M). El mejor desempeño se dio en la región Andina (+14%), mientras que la región Caribe quedó 3% por debajo de su objetivo.
-          <table>
-            <tr><th>Región</th><th>Real</th><th>Meta</th><th>Var.</th></tr>
-            <tr><td>Andina</td><td>$2.1M</td><td>$1.84M</td><td>+14%</td></tr>
-            <tr><td>Pacífico</td><td>$1.3M</td><td>$1.25M</td><td>+4%</td></tr>
-            <tr><td>Caribe</td><td>$0.9M</td><td>$0.93M</td><td>-3%</td></tr>
-          </table>
-          <div class="src">📎 Fuente: gold.tb_ventas_regional · actualizado hoy 06:02 a.m.</div>
-        </div>
-        <div class="msg user">¿Qué recomiendas para la región Caribe?</div>
-        <div class="msg bot"><span class="typing"><span></span><span></span><span></span></span></div>
-      </div>
+      <div class="chat-body" id="chatBody"></div>
       <div class="chat-input">
-        <input type="text" placeholder="Escribe tu pregunta sobre el negocio..." disabled>
-        <button>Enviar</button>
+        <input type="text" id="chatInputField" placeholder="Escribe tu pregunta sobre el negocio...">
+        <button id="chatSendBtn">Enviar</button>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+(function(){
+  var THREADS = {
+    t1: {
+      title: "Ventas Q2 por región",
+      sub: "Conectado a: Data Warehouse · CRM · SharePoint",
+      msgs: [
+        {role:"user", html:"¿Cómo van las ventas del segundo trimestre frente a la meta?"},
+        {role:"bot", html:"En el Q2, las ventas totales alcanzaron <b>$4.82M</b>, un 6.3% por encima de la meta trimestral ($4.53M). El mejor desempeño se dio en la región Andina (+14%), mientras que la región Caribe quedó 3% por debajo de su objetivo." +
+          "<table><tr><th>Región</th><th>Real</th><th>Meta</th><th>Var.</th></tr><tr><td>Andina</td><td>$2.1M</td><td>$1.84M</td><td>+14%</td></tr><tr><td>Pacífico</td><td>$1.3M</td><td>$1.25M</td><td>+4%</td></tr><tr><td>Caribe</td><td>$0.9M</td><td>$0.93M</td><td>-3%</td></tr></table>" +
+          "<div class=\"src\">📎 Fuente: gold.tb_ventas_regional · actualizado hoy 06:02 a.m.</div>"},
+        {role:"user", html:"¿Qué recomiendas para la región Caribe?"},
+        {role:"bot", html:"El principal problema en Caribe es rotación de inventario baja en 2 categorías. Sugiero reforzar Trade Marketing en esas categorías y revisar el nivel de servicio con el distribuidor local, que ha bajado 4 puntos este trimestre.<div class=\"src\">📎 Fuente: gold.tb_trade_marketing + gold.tb_nivel_servicio</div>"}
+      ]
+    },
+    t2: {
+      title: "Rotación de inventario",
+      sub: "Conectado a: Data Warehouse · ERP",
+      msgs: [
+        {role:"user", html:"¿Qué productos tienen menor rotación este mes?"},
+        {role:"bot", html:"Los 3 productos con menor rotación este mes son Bebidas Funcionales (2.1x), Cuidado Personal Premium (2.4x) y Snacks Importados (2.6x). Los tres están concentrados en la región Caribe.<div class=\"src\">📎 Fuente: gold.tb_rotacion_inventario</div>"}
+      ]
+    },
+    t3: {
+      title: "Resumen contrato proveedor",
+      sub: "Conectado a: SharePoint · Documentos legales",
+      msgs: [
+        {role:"user", html:"Resume las condiciones de pago del contrato con Distribuidora Caribe."},
+        {role:"bot", html:"Según el contrato vigente (firmado marzo 2026), las condiciones son: pago a 45 días, descuento por pronto pago de 2% a 15 días, y cláusula de revisión de precios cada 6 meses. El contrato vence en octubre 2026.<div class=\"src\">📎 Fuente: SharePoint / Contratos / Distribuidora_Caribe_2026.pdf</div>"}
+      ]
+    },
+    t4: {
+      title: "Indicadores de cartera",
+      sub: "Conectado a: ERP · Financiero",
+      msgs: [
+        {role:"user", html:"¿Cómo está la cartera vencida este mes?"},
+        {role:"bot", html:"La cartera vencida es del 8.4% del total, levemente por encima del objetivo (7%). El 60% de esa cartera vencida corresponde a 4 clientes de la región Pacífico.<div class=\"src\">📎 Fuente: gold.tb_cartera</div>"}
+      ]
+    }
+  };
+
+  var body = document.getElementById('chatBody');
+  var titleEl = document.getElementById('chatTitle');
+  var subEl = document.getElementById('chatSub');
+  var input = document.getElementById('chatInputField');
+  var sendBtn = document.getElementById('chatSendBtn');
+  var items = document.querySelectorAll('.chat-item');
+
+  var CANNED = [
+    {kw:["precio","costo","cuánto cuesta","cuanto cuesta"], reply:"El costo depende del alcance (fuentes a conectar, usuarios, nivel de seguridad). Con gusto te preparamos una cotización — cuéntanos por WhatsApp los detalles de tu operación."},
+    {kw:["seguridad","permiso","acceso"], reply:"Cada usuario ve solo la información a la que tiene permiso según su rol. Todo queda registrado para auditoría."},
+    {kw:["cómo funciona","como funciona","integra","conecta"], reply:"Se conecta directamente a tu Data Warehouse, CRM y documentos internos, y responde citando siempre la fuente exacta del dato."},
+    {kw:["gracias","genial","excelente"], reply:"¡Con gusto! Si quieres, seguimos la conversación con nuestro equipo para ver cómo se vería en tu empresa."}
+  ];
+  var DEFAULT_REPLY = "Buena pregunta. En una implementación real, respondería esto conectado a tus propios datos, con la fuente citada. ¿Quieres que un consultor te muestre cómo se vería con tu información?";
+
+  function render(threadKey){
+    var t = THREADS[threadKey];
+    titleEl.textContent = t.title;
+    subEl.textContent = t.sub;
+    body.innerHTML = '';
+    t.msgs.forEach(function(m){
+      var div = document.createElement('div');
+      div.className = 'msg ' + m.role;
+      div.innerHTML = m.html;
+      body.appendChild(div);
+    });
+    body.scrollTop = body.scrollHeight;
+  }
+
+  items.forEach(function(item){
+    item.addEventListener('click', function(){
+      items.forEach(function(i){ i.classList.remove('active'); });
+      item.classList.add('active');
+      render(item.getAttribute('data-thread'));
+    });
+  });
+
+  function getReply(text){
+    var t = text.toLowerCase();
+    for(var i=0;i<CANNED.length;i++){
+      for(var j=0;j<CANNED[i].kw.length;j++){
+        if(t.indexOf(CANNED[i].kw[j]) !== -1) return CANNED[i].reply;
+      }
+    }
+    return DEFAULT_REPLY;
+  }
+
+  function sendMessage(){
+    var text = input.value.trim();
+    if(!text) return;
+    var userMsg = document.createElement('div');
+    userMsg.className = 'msg user';
+    userMsg.textContent = text;
+    body.appendChild(userMsg);
+    input.value = '';
+    body.scrollTop = body.scrollHeight;
+
+    var typing = document.createElement('div');
+    typing.className = 'msg bot';
+    typing.innerHTML = '<span class="typing"><span></span><span></span><span></span></span>';
+    body.appendChild(typing);
+    body.scrollTop = body.scrollHeight;
+
+    setTimeout(function(){
+      typing.remove();
+      var reply = document.createElement('div');
+      reply.className = 'msg bot';
+      reply.textContent = getReply(text);
+      body.appendChild(reply);
+      body.scrollTop = body.scrollHeight;
+    }, 700);
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', function(e){ if(e.key === 'Enter') sendMessage(); });
+
+  document.getElementById('copilotNewChat').addEventListener('click', function(){
+    items.forEach(function(i){ i.classList.remove('active'); });
+    items[0].classList.add('active');
+    render('t1');
+  });
+
+  render('t1');
+})();
+</script>
 
 
 
