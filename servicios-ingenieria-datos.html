@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingeniería de Datos — NextData AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F172A;
+    --navy-2:#1E293B;
+    --blue:#2563EB;
+    --cyan:#06B6D4;
+    --mist:#F8FAFC;
+    --text-soft:#94A3B8;
+    --grad: linear-gradient(120deg, var(--blue), var(--cyan));
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Montserrat', sans-serif;background:var(--mist);color:var(--navy);line-height:1.6;overflow-x:hidden;}
+  h1,h2,h3,h4,.logo,.eyebrow,.btn{font-family:'Poppins', sans-serif;}
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  img,svg{display:block;}
+  section{padding:100px 8vw;}
+  .container{max-width:1200px;margin:0 auto;}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 6vw;background:rgba(15,23,42,0.9);backdrop-filter: blur(10px);border-bottom:1px solid rgba(255,255,255,0.06);}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.3rem;color:#fff;}
+  .logo .mark{width:30px;height:30px;}
+  .logo .ai{color:var(--cyan);font-weight:800;}
+  nav ul{display:flex;gap:34px;}
+  nav a{color:#CBD5E1;font-size:.92rem;font-weight:500;letter-spacing:.2px;position:relative;transition:color .25s;}
+  nav a:hover, nav a.active{color:#fff;}
+  nav a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--grad);transition:width .25s;}
+  nav a:hover::after, nav a.active::after{width:100%;}
+  .nav-cta{background:var(--grad);color:#fff;padding:10px 22px;border-radius:8px;font-size:.88rem;font-weight:600;white-space:nowrap;}
+  .burger{display:none;color:#fff;font-size:1.6rem;cursor:pointer;background:none;border:none;}
+
+  .service-hero{position:relative;min-height:62vh;display:flex;align-items:flex-end;background:var(--navy);color:#fff;padding-top:160px;overflow:hidden;}
+  .service-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 15%, rgba(37,99,235,.35), transparent 45%),radial-gradient(circle at 100% 90%, rgba(6,182,212,.25), transparent 50%);pointer-events:none;}
+  .grid-overlay{position:absolute;inset:0;opacity:.15;pointer-events:none;background-image:linear-gradient(rgba(148,163,184,.35) 1px, transparent 1px),linear-gradient(90deg, rgba(148,163,184,.35) 1px, transparent 1px);background-size:48px 48px;mask-image: linear-gradient(to bottom, transparent, black 25%, black 90%);}
+  .hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding-bottom:70px;}
+  .breadcrumb{color:#64748B;font-size:.82rem;margin-bottom:20px;}
+  .breadcrumb a{color:#94A3B8;}
+  .breadcrumb a:hover{color:#fff;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-size:.8rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px;padding:8px 16px;border:1px solid rgba(6,182,212,.35);border-radius:100px;background:rgba(6,182,212,.06);}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+  .service-hero h1{font-size:clamp(2.1rem, 4.4vw, 3.2rem);font-weight:700;max-width:760px;line-height:1.18;letter-spacing:-1px;}
+  .service-hero p.sub{margin-top:22px;max-width:600px;color:#94A3B8;font-size:1.05rem;font-weight:300;}
+  .hero-ctas{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;border-radius:9px;font-weight:600;font-size:.95rem;cursor:pointer;transition:transform .25s ease, box-shadow .25s ease;border:none;}
+  .btn-primary{background:var(--grad);color:#fff;box-shadow:0 10px 30px -8px rgba(37,99,235,.6);}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 34px -8px rgba(37,99,235,.75);}
+  .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25);}
+  .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06);}
+
+  .section-head{max-width:640px;margin-bottom:50px;}
+  .section-head .tag{color:var(--blue);font-weight:600;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;}
+  .section-head h2{font-size:clamp(1.7rem,3vw,2.3rem);margin-top:12px;letter-spacing:-.5px;}
+  .section-head p{color:#64748B;margin-top:14px;font-size:1rem;}
+
+  .offer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  .offer-item{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:24px 26px;display:flex;gap:16px;align-items:flex-start;transition:.25s;}
+  .offer-item:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 16px 30px -18px rgba(15,23,42,.2);}
+  .offer-num{font-family:'Poppins';font-weight:700;color:var(--cyan);font-size:.85rem;flex-shrink:0;margin-top:3px;}
+  .offer-item p{font-weight:600;font-size:.96rem;color:var(--navy);}
+  @media (max-width:800px){.offer-grid{grid-template-columns:1fr;}}
+
+  .tech-strip{background:var(--navy-2);}
+  .tech-strip .section-head p{color:#94A3B8;}
+  .tech-strip .section-head .tag{color:var(--cyan);}
+  .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
+  .tech-chip{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:20px 16px;text-align:center;font-weight:600;font-size:.9rem;color:#fff;transition:.25s;}
+  .tech-chip:hover{border-color:var(--cyan);transform:translateY(-4px);}
+
+  .related{background:#fff;}
+  .related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .related-card{border:1px solid #E2E8F0;border-radius:14px;padding:22px;transition:.25s;}
+  .related-card:hover{border-color:var(--blue);transform:translateY(-3px);}
+  .related-card.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .related-card h4{font-size:.95rem;margin-bottom:6px;}
+  .related-card p{font-size:.8rem;color:#64748B;}
+  .related-card.active p{color:#94A3B8;}
+  @media (max-width:900px){.related-grid{grid-template-columns:repeat(2,1fr);}}
+
+  .cta-final{background:var(--navy);color:#fff;text-align:center;position:relative;overflow:hidden;}
+  .cta-final::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%, rgba(37,99,235,.35), transparent 60%);}
+  .cta-final .container{position:relative;z-index:2;}
+  .cta-final h2{font-size:clamp(1.7rem,3.2vw,2.4rem);max-width:680px;margin:0 auto 16px;letter-spacing:-.5px;}
+  .cta-final p{color:#94A3B8;max-width:520px;margin:0 auto 32px;}
+  .cta-final .hero-ctas{justify-content:center;}
+
+  footer{background:#0B1220;color:#94A3B8;padding:60px 8vw 30px;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;max-width:1200px;margin:0 auto;}
+  .footer-grid h4{color:#fff;font-family:'Poppins';font-size:.95rem;margin-bottom:18px;}
+  .footer-grid ul li{margin-bottom:10px;font-size:.87rem;}
+  .footer-grid ul li a:hover{color:#fff;}
+  .footer-logo{display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;margin-bottom:14px;}
+  .footer-bottom{max-width:1200px;margin:50px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.8rem;}
+  .social-row{display:flex;gap:14px;}
+  .social-row a{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:.25s;}
+  .social-row a:hover{background:var(--grad);border-color:transparent;}
+
+  @media (max-width:1000px){
+    nav ul, .nav-cta{display:none;}
+    .burger{display:block;}
+    section{padding:70px 6vw;}
+    .related-grid{grid-template-columns:1fr;}
+  }
+
+  .wa-float{position:fixed;bottom:26px;right:26px;width:60px;height:60px;border-radius:50%;
+    background:#25D366;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 26px -6px rgba(37,211,102,.6);z-index:999;transition:transform .25s ease;}
+  .wa-float:hover{transform:scale(1.08);}
+  @media (max-width:600px){.wa-float{width:54px;height:54px;bottom:18px;right:18px;}}
+
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">
+    <svg class="mark" viewBox="0 0 40 40" fill="none">
+      <defs><linearGradient id="ngrad" x1="0" y1="0" x2="40" y2="40"><stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+      <path d="M6 34V6L26 34V6" stroke="url(#ngrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect x="30" y="6" width="4" height="4" fill="#06B6D4"/><rect x="34" y="12" width="4" height="4" fill="#2563EB"/><rect x="30" y="18" width="4" height="4" fill="#06B6D4"/>
+    </svg>
+    NextData <span class="ai">AI</span>
+  </a>
+  <nav>
+    <ul>
+      <li><a href="index.html#quienes-somos">Quiénes somos</a></li>
+      <li><a href="productos.html">Productos</a></li>
+      <li><a href="index.html#servicios" class="active">Servicios</a></li>
+      <li><a href="index.html#industrias">Industrias</a></li>
+      <li><a href="index.html#casos">Casos de éxito</a></li>
+      <li><a href="index.html#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+  <a href="index.html#contacto" class="nav-cta">Agendar una reunión</a>
+  <button class="burger">☰</button>
+</header>
+
+
+<section class="service-hero">
+  <div class="grid-overlay"></div>
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="index.html">Inicio</a> / <a href="index.html#servicios">Servicios</a> / Ingeniería de Datos</div>
+    <div class="eyebrow"><span class="dot"></span> Servicios · Data Engineering</div>
+    <h1>Ingeniería de Datos</h1>
+    <p class="sub">Diseñamos y construimos las bases de datos que soportan la operación y las decisiones de tu empresa: sólidas, gobernadas y listas para escalar.</p>
+    <div class="hero-ctas">
+      <a href="index.html#contacto" class="btn btn-primary">Agendar una reunión →</a>
+      <a href="index.html#casos" class="btn btn-ghost">Ver casos de éxito</a>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Qué hacemos</div>
+      <h2>De datos dispersos a una plataforma confiable</h2>
+      <p>Construimos la infraestructura de datos que conecta tus sistemas, garantiza calidad y habilita analítica e IA en toda la organización.</p>
+    </div>
+    <div class="offer-grid">
+      <div class="offer-item"><span class="offer-num">01</span><p>Arquitectura Lakehouse</p></div>
+<div class="offer-item"><span class="offer-num">02</span><p>Data Warehouse</p></div>
+<div class="offer-item"><span class="offer-num">03</span><p>Data Lake</p></div>
+<div class="offer-item"><span class="offer-num">04</span><p>ETL y ELT</p></div>
+<div class="offer-item"><span class="offer-num">05</span><p>Integración de datos</p></div>
+<div class="offer-item"><span class="offer-num">06</span><p>Gobierno del dato</p></div>
+<div class="offer-item"><span class="offer-num">07</span><p>Calidad de datos</p></div>
+<div class="offer-item"><span class="offer-num">08</span><p>Catálogo de datos</p></div>
+<div class="offer-item"><span class="offer-num">09</span><p>Modelado dimensional</p></div>
+<div class="offer-item"><span class="offer-num">10</span><p>Optimización de plataformas</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="tech-strip">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Tecnologías</div>
+      <h2>El stack detrás de la solución</h2>
+      <p>Herramientas probadas en entornos empresariales de alta exigencia.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-chip">Azure</div>
+<div class="tech-chip">Databricks</div>
+<div class="tech-chip">Microsoft Fabric</div>
+<div class="tech-chip">Snowflake</div>
+<div class="tech-chip">ADF</div>
+<div class="tech-chip">Spark</div>
+<div class="tech-chip">Python</div>
+<div class="tech-chip">SQL Server</div>
+<div class="tech-chip">PostgreSQL</div>
+<div class="tech-chip">MySQL</div>
+    </div>
+  </div>
+</section>
+
+<section class="related">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Explora</div>
+      <h2>Otros servicios</h2>
+    </div>
+    <div class="related-grid">
+      <a href="servicios-inteligencia-artificial.html" class="related-card"><h4>Inteligencia Artificial</h4><p>Agentes, RAG, chatbots y automatización con LLMs.</p></a>
+<a href="servicios-cloud.html" class="related-card"><h4>Cloud</h4><p>Azure, Fabric, arquitecturas híbridas y migraciones.</p></a>
+<a href="servicios-business-intelligence.html" class="related-card"><h4>Business Intelligence</h4><p>Dashboards ejecutivos, KPIs y analítica avanzada.</p></a>
+
+    </div>
+  </div>
+</section>
+
+<section class="cta-final">
+  <div class="container">
+    <h2>¿Hablamos sobre tu proyecto de ingeniería de datos?</h2>
+    <p>Agenda una reunión sin compromiso y descubre cómo podemos ayudarte.</p>
+    <div class="hero-ctas">
+      <a href="index.html#contacto" class="btn btn-primary">Agendar una reunión →</a>
+      <a href="mailto:info@nextdataai.com" class="btn btn-ghost">Escríbenos</a>
+    </div>
+  </div>
+</section>
+
+
+<footer id="contacto">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <svg width="26" height="26" viewBox="0 0 40 40" fill="none"><path d="M6 34V6L26 34V6" stroke="url(#ngrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        NextData AI
+      </div>
+      <p style="max-width:280px;font-size:.87rem;">Transformamos datos en decisiones inteligentes mediante Ingeniería de Datos e Inteligencia Artificial.</p>
+      <div class="social-row" style="margin-top:20px;">
+        <a href="https://wa.me/573014314685" target="_blank" rel="noopener" title="WhatsApp">💬</a>
+        <a href="mailto:info@nextdataai.com" title="Correo">✉️</a>
+      </div>
+    </div>
+    <div>
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="servicios-ingenieria-datos.html">Ingeniería de Datos</a></li>
+        <li><a href="servicios-inteligencia-artificial.html">Inteligencia Artificial</a></li>
+        <li><a href="servicios-cloud.html">Cloud</a></li>
+        <li><a href="servicios-business-intelligence.html">Business Intelligence</a></li>
+        <li><a href="servicios-automatizacion.html">Automatización</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Empresa</h4>
+      <ul>
+        <li><a href="quienes-somos.html">Quiénes somos</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="tecnologias.html">Tecnologías</a></li>
+        <li><a href="index.html#industrias">Industrias</a></li>
+        <li><a href="index.html#casos">Casos de éxito</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>info@nextdataai.com</li>
+        <li>+57 301 431 4685</li>
+        <li>Colombia</li>
+        <li>www.nextdataai.com</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 NextData AI. Todos los derechos reservados.</span>
+    <span>Bogotá, Colombia</span>
+  </div>
+</footer>
+
+
+<a href="https://wa.me/573014314685" target="_blank" rel="noopener" class="wa-float" aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 32 32" width="28" height="28" fill="#fff"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.3.62 4.455 1.7 6.31L3 29l7.37-2.15A12.44 12.44 0 0 0 16 28c6.894 0 12.5-5.607 12.5-12.5S22.895 3 16.001 3zm0 22.7a10.15 10.15 0 0 1-5.176-1.42l-.372-.22-4.373 1.276 1.298-4.26-.242-.39a10.16 10.16 0 0 1-1.536-5.386c0-5.63 4.58-10.2 10.2-10.2 5.63 0 10.2 4.58 10.2 10.2s-4.57 10.4-10 10.4zm5.59-7.64c-.306-.153-1.81-.893-2.09-.996-.28-.102-.484-.153-.688.154-.204.306-.79.996-.968 1.2-.178.204-.357.23-.663.077-.306-.153-1.29-.475-2.458-1.517-.909-.81-1.523-1.812-1.702-2.118-.178-.306-.02-.472.134-.624.138-.137.306-.357.459-.535.153-.178.204-.306.306-.51.102-.204.05-.383-.026-.536-.077-.153-.688-1.658-.943-2.27-.248-.596-.5-.516-.688-.526l-.586-.01c-.204 0-.535.077-.816.383-.28.306-1.07 1.046-1.07 2.55 0 1.505 1.096 2.96 1.25 3.164.153.204 2.157 3.292 5.226 4.618.73.315 1.3.503 1.744.644.733.233 1.4.2 1.928.121.588-.088 1.81-.74 2.065-1.454.255-.714.255-1.326.178-1.454-.076-.128-.28-.204-.586-.357z"/></svg>
+</a>
+
+</body>
+</html>
